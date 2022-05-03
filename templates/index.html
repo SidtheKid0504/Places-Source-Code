@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" integrity="" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/index.css">
+    <title>Places</title>
+  </head>
+  <body>
+    <div class="header">
+      <img src="../static/assets/logo.png"></img>
+    </div>
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 style="background-color:rgb(221, 249, 244)">Login To Places</h1>
+        </div>
+        <div id="login" class="login-modal">
+          <form method="POST" action="/" class="login-form" id="login-form">
+            <input type="text" class="login-input" name="login_username" placeholder="Username" required="true">
+            <input type="password" class="login-input" name="login_password" placeholder="Password" required="true">
+            <button id="submitLogin" class="btn-login">Sign In</button>
+          </form>
+          {% if user_not_found %}
+            <span id="notFoundMessage">*User Not Found</span>
+          {% endif %}
+        </div>
+        <span id="forgotPasswordRedirect" class="redirect"><a href="/forgot_password">Forgot Password</a></span>
+        <span id="redirectSignUp" class="redirect"><a href="/signup">Sign Up</a></span>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="navbar">
+        <div class="timer-container" id="timer-container">
+          <h3 id="timer">Time Until You Can Place Your Next Pixel: 0:00</h3>
+        </div>
+        <h3>Color Of Pixel: </h3>
+        <input type="color" value="#000000" class="color">
+      </div>
+      <div class="container">
+      </div>
+      <div class="message-container">
+        <div class="message-header">
+          <h1>Chat</h1>
+        </div>
+        <div class="messages">
+          <ul id="all-messages"></ul>
+        </div>
+        <div class="message-input">
+          <div id="message-input-container">
+            <input type="text" id="user-message" name="message" placeholder="Message" autocomplete="off">
+            <button id="message-submit">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="../static/index.js" width="100px" height="100px"></script>
+    <script>
+      //Get Data Sent From Server To HTML File
+      let currUser = {{current_username|safe|tojson}};
+
+      //Variable That Takes The Time Of When The User Placed The Last Pixel
+      let lastPix = {{last_pixel|safe|tojson}};
+
+      //Call Function That Displays The Modal Function If Not Logged In
+      displayOrUndisplayModal(currUser);
+
+      //Get All Pixels
+      let pix = {{pixels|safe|tojson}}.replaceAll("'", '"');
+
+      //Check If The User Is Logged In
+      if(currUser != "") {
+        //Call Timer Function Every Second
+        setInterval(() => {
+          timer(lastPix);
+        }, 1000);
+        //Check If Pixels Have Been Placed
+        if (pix != "") {
+          //Convert All Pixels From A String To An Array
+          pix = JSON.parse(pix);
+
+          //Loop Through Array And Call The GetPixels Function Every Second
+          for(let i=0; i<pix.length; i++) {
+            getPixels(pix[i].pixel_id, pix[i].color);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

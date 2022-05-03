@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/signup.css">
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <div class="signup-wrapper">
+      <div class="header">
+        <div class="go-back">
+          <span><a href="/">&#8592</a></span>
+        </div>
+        <h1 class="header-title">Sign Up</h1>
+      </div>
+      <form id="signup-form" class="signup-form" action="/signup" method="POST">
+        <input type="email" class="signup-input" name="email" placeholder="Email" required="true">
+        <input type="text" class="signup-input" name="username" placeholder="Username" required="true">
+        <input type="password" class="signup-input" name="password" placeholder="Password" required="true">
+        <button class="input-submit" id="input-submit">Sign Up</button>
+      </form>
+      {% if email_exists %}
+        <span class="error-message">*Email has already been used</span>
+      {% elif username_exists%}
+        <span class="error-message">*Username is already taken</span>
+      {%endif%}
+    </div>
+    <script src="../static/signup.js"></script>
+  </body>
+</html>

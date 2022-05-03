@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/notif.css">
+    <title>Verify Notif</title>
+  </head>
+  <body>
+    <div class="header">
+      <img src="../static/assets/logo.png"></img>
+    </div>
+    <div class="container">
+      <form id="resend-email" action="/signup" method="Post">
+        <h1 class="notif-content" id="text-header">Verification Link Sent</h1>
+        <h3 class="notif-content" id="text-body">Check Your Inbox Before Two Min. Pass And Enjoy Your Experience!</h3>
+        <button class="notif-content" id="submit-btn">Resend Verification Email</button>
+      </form>
+    </div>
+    <script>
+      const submitButton = document.getElementById("submit-btn");
+
+      submitButton.onclick = function() {
+        $.post(window.location.href, {
+          resend_email: true
+        });
+      }
+    </script>
+  </body>
+</html>
